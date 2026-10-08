@@ -1,0 +1,1249 @@
+/* src/App.css */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-main: #0b0f19;
+  --bg-sidebar: #070a10;
+  --card-bg: rgba(22, 28, 42, 0.75);
+  --card-bg-hover: rgba(30, 39, 58, 0.85);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --accent-cyan: #00e5ff;
+  --accent-cyan-hover: #33ebff;
+  --text-main: #ffffff;
+  --text-muted: #8896ab;
+  --font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  overflow-x: hidden;
+}
+
+/* Layout Principal */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-main);
+}
+
+/* 1. Sidebar Nav */
+.sidebar-nav {
+  width: 220px;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--card-border);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 8px;
+}
+
+.pokeball-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-cyan);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pokeball-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-cyan);
+  transform: translateY(-50%);
+}
+
+.pokeball-center {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bg-sidebar);
+  border: 2px solid var(--accent-cyan);
+  z-index: 1;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-title {
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: -0.5px;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.nav-item.active {
+  background: rgba(0, 229, 255, 0.08);
+  border-color: rgba(0, 229, 255, 0.4);
+  color: var(--accent-cyan);
+}
+
+.nav-svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* 2. Main Viewport */
+.main-viewport {
+  flex: 1;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-heading {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.top-pills-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(18, 24, 38, 0.8);
+  border: 1px solid var(--card-border);
+  padding: 6px 10px;
+  border-radius: 12px;
+}
+
+.pill-resource {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+}
+
+.pill-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.pill-lbl {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.pill-val {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.coin-icon {
+  width: 20px;
+  height: 20px;
+  background: #facc15;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
+}
+
+.pack-mini-icon {
+  width: 16px;
+  height: 22px;
+  background: #3b82f6;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+}
+
+.pill-more-btn {
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.pill-more-btn span {
+  width: 3px;
+  height: 3px;
+  background: var(--text-muted);
+  border-radius: 50%;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.grid-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Estilo Tarjeta Base */
+.dash-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 18px;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.card-heading {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.card-subheading {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Columna Izquierda: Gauge y Gachapón */
+.progress-gauge-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0 10px 0;
+}
+
+.gauge-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  /* Anillo de progreso: el color cian ocupa el porcentaje de --progress */
+  background:
+    radial-gradient(closest-side, #141a27 82%, transparent 83% 100%),
+    conic-gradient(var(--accent-cyan) var(--progress, 0%), rgba(255, 255, 255, 0.06) 0);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+}
+
+.gauge-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.gauge-percentage {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.gauge-footer-meta {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 6px;
+}
+
+.set-highlight-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.set-highlight-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.gachapon-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.gachapon-art {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 14px;
+  position: relative;
+  min-height: 110px;
+}
+
+.gachapon-machine {
+  width: 60px;
+  height: 90px;
+  border: 2px solid #ff41b4;
+  border-radius: 12px 12px 6px 6px;
+  position: relative;
+  box-shadow: 0 0 12px rgba(255, 65, 180, 0.3);
+}
+
+.machine-glass {
+  height: 55px;
+  border-bottom: 2px solid #ff41b4;
+}
+
+.machine-base {
+  height: 35px;
+  background: rgba(255, 65, 180, 0.1);
+}
+
+.ball-cluster {
+  display: flex;
+  align-items: flex-end;
+  gap: -6px;
+}
+
+.gacha-capsule {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.capsule-blue { background: #00d2ff; }
+.capsule-yellow { background: #facc15; }
+.capsule-red { background: #ef4444; }
+
+/* Columna Central */
+.hero-display-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+}
+
+.center-featured-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.card-spotlight-wrapper {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+}
+
+.spotlight-card-img {
+  width: 220px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 229, 255, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.spotlight-card-img:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+.neon-cta-btn {
+  background-color: var(--accent-cyan);
+  color: #000;
+  font-weight: 800;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 36px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+  transition: all 0.2s ease;
+}
+
+.neon-cta-btn:hover {
+  background-color: var(--accent-cyan-hover);
+  box-shadow: 0 0 28px rgba(0, 229, 255, 0.7);
+  transform: scale(1.03);
+}
+
+.neon-cta-btn-sm {
+  background-color: var(--accent-cyan);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+/* Drops Inferiores */
+.drops-row-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rare-drop-previews {
+  display: flex;
+  gap: 8px;
+}
+
+.mini-rare-card {
+  width: 42px;
+  border-radius: 4px;
+  border: 1px solid var(--card-border);
+}
+
+/* Columna Derecha: Mercado y Misiones */
+.market-price-tag {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-top: 10px;
+  letter-spacing: -1px;
+}
+
+.market-cards-strip {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.market-cards-strip img {
+  width: 52px;
+  border-radius: 6px;
+  border: 1px solid var(--card-border);
+}
+
+.mission-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mission-row:last-child {
+  border-bottom: none;
+}
+
+.mission-prog {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Flujo de Apertura e Inputs */
+.custom-input {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  outline: none;
+}
+
+.btn-back {
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-back:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+.sets-grid-scroll {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+  max-height: 380px;
+  overflow-y: auto;
+  margin-top: 15px;
+}
+
+.set-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.set-box:hover {
+  border-color: var(--accent-cyan);
+}
+
+.set-box img {
+  max-height: 40px;
+  object-fit: contain;
+  margin-bottom: 6px;
+}
+
+.set-box p {
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.set-box small {
+  color: var(--accent-cyan);
+  font-size: 0.65rem;
+}
+
+/* Flip Card 3D */
+.flip-card-container {
+  width: 200px;
+  height: 280px;
+  perspective: 1000px;
+  margin: 10px auto;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-card-front img, .flip-card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Vistas Alternativas (Álbum / Colecciones) */
+.view-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.view-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.all-sets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.set-explorer-card {
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.set-explorer-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-cyan);
+}
+
+.set-explorer-logo {
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.album-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 14px;
+}
+
+.album-card-item {
+  position: relative;
+  text-align: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.album-card-item img {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.card-qty-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--accent-cyan);
+  color: #000;
+  font-weight: 800;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* Resumen Apertura */
+.summary-cards-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+  justify-content: center;
+}
+
+.summary-thumb img {
+  width: 80px;
+  border-radius: 6px;
+}
+/* ---------- Partida real: estados, botones y nuevas vistas ---------- */
+
+button {
+  font-family: inherit;
+}
+
+button:disabled,
+.neon-cta-btn:disabled,
+.neon-cta-btn-sm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.align-start {
+  align-self: flex-start;
+}
+
+.muted-text,
+.empty-text {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.empty-text {
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+.header-notice {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--accent-cyan);
+}
+
+.error-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #fca5a5;
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 12px 0;
+}
+
+.spotlight-caption {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.spotlight-caption strong {
+  color: var(--text-main);
+}
+
+/* Los elementos clicables ahora son <button> (accesibles con teclado) */
+.set-box,
+.set-explorer-card,
+.flip-card-container,
+.market-card {
+  font: inherit;
+  color: inherit;
+}
+
+.flip-card-container {
+  display: block;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.opened-card-name {
+  font-size: 1rem;
+}
+
+/* Niveles de rareza */
+.tier-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tier-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 4px auto 0;
+  background: currentColor;
+}
+
+.tier-common { color: #9ca3af; }
+.tier-uncommon { color: #4ade80; }
+.tier-rare { color: #60a5fa; }
+.tier-ultra { color: #c084fc; }
+.tier-illustration { color: #f472b6; }
+.tier-secret { color: #facc15; }
+
+.tier-text {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.summary-thumb {
+  text-align: center;
+  font-size: 0.65rem;
+  max-width: 80px;
+}
+
+/* Mercado */
+.coin-inline {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #facc15;
+  vertical-align: middle;
+}
+
+.market-card {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.market-card:hover img {
+  border-color: var(--accent-cyan);
+}
+
+/* Misiones */
+.mission-row {
+  align-items: center;
+  gap: 10px;
+}
+
+.mission-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mission-info small {
+  color: #facc15;
+  font-size: 0.7rem;
+}
+
+/* Colecciones: progreso por colección */
+.mini-progress {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.mini-progress div {
+  height: 100%;
+  background: var(--accent-cyan);
+}
+
+.set-explorer-card span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Álbum */
+.album-card-item p {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.empty-card-album {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+/* Tienda */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.shop-offer {
+  text-align: center;
+}
+
+.shop-offer h3 {
+  margin-top: 12px;
+}
+
+.pack-stack {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  min-height: 60px;
+  align-items: flex-end;
+}
+
+.pack-mini-icon.big {
+  width: 38px;
+  height: 54px;
+  border-radius: 6px;
+}
+
+/* Ajustes */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.stats-list {
+  list-style: none;
+  margin-top: 12px;
+}
+
+.stats-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* ---------- Álbum: modos, filtros y huecos ---------- */
+
+.segmented {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.segmented button {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.segmented button.active {
+  background: rgba(0, 229, 255, 0.12);
+  color: var(--accent-cyan);
+}
+
+.album-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.field select.custom-input {
+  min-width: 220px;
+}
+
+select.custom-input option,
+select.custom-input optgroup {
+  background: #141a27;
+  color: #fff;
+}
+
+.album-progress {
+  flex: 1;
+  min-width: 200px;
+}
+
+.album-progress-text {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.tier-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tier-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.tier-chip.off {
+  border-color: var(--card-border);
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* Las cartas del álbum ahora son botones: abren la ficha */
+.album-card-item {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.album-card-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-cyan);
+}
+
+.card-number {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 6px;
+  border-radius: 6px;
+  z-index: 1;
+}
+
+/* Carta que todavía no tienes: en gris, oscura y con borde discontinuo */
+.album-card-item.is-missing {
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.album-card-item.is-missing img,
+.card-modal-img.is-missing {
+  filter: grayscale(1) brightness(0.35);
+}
+
+.album-card-item.is-missing p,
+.album-card-item.is-missing small {
+  opacity: 0.45;
+}
+
+/* Ficha de carta */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.card-modal {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  max-width: 640px;
+  width: 100%;
+  background: #141a27;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.card-modal-img {
+  width: 240px;
+  max-width: 45%;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.card-modal-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.card-modal-count {
+  font-size: 0.9rem;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* Logos de colección: nunca más anchos que su tarjeta */
+.set-explorer-card,
+.set-box {
+  overflow: hidden;
+  min-width: 0;
+}
+
+.set-explorer-logo {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 60px;
+  margin: 0 auto 10px;
+  object-fit: contain;
+}
+
+.set-box img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 40px;
+  margin: 0 auto 6px;
+  object-fit: contain;
+}
+
+.set-explorer-card h4 {
+  overflow-wrap: anywhere;
+}
+
+/* Filtro de precio */
+.price-range {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.price-range .custom-input {
+  width: 90px;
+}
+
+.card-price {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.65rem;
+  color: #facc15;
+}
+
+/* ---------- Precios y tienda por colección ---------- */
+
+.pack-title {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.pack-price-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin: 12px 0;
+}
+
+.pack-price-info > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pack-price-info span {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pack-price-info strong {
+  font-size: 0.95rem;
+}
+
+.pack-price-info small {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.shop-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.shop-layout .shop-grid {
+  margin-top: 8px;
+}
+
+.shop-offer {
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.wildcard-note {
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.card-modal-price {
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-modal-price small {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
