@@ -1247,3 +1247,239 @@ select.custom-input optgroup {
   color: var(--text-muted);
   font-size: 0.7rem;
 }
+
+/* =====================================================================
+   RESPONSIVE
+   - Portátil y escritorio (≥ 1280 px): diseño original de 3 columnas.
+   - Portátil pequeño (1024–1279 px): el sobre arriba a todo el ancho y
+     las otras tarjetas en 2 columnas debajo.
+   - Tablet (768–1023 px): barra lateral solo con iconos.
+   - Móvil (< 768 px): menú abajo, todo en una columna.
+   ===================================================================== */
+
+/* Imagen principal (sobre o mejor carta): más grande, sin pasarse del hueco */
+.spotlight-card-img {
+  width: 280px;
+  max-width: 100%;
+  height: auto;
+}
+
+.view-header-bar,
+.dashboard-header,
+.drops-row-card {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.main-viewport {
+  min-width: 0;
+}
+
+/* El menú lateral se queda fijo al hacer scroll (en móvil pasa abajo) */
+.sidebar-nav {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* ---------- Portátil pequeño ---------- */
+@media (max-width: 1279px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dashboard-grid .center-col {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+
+  .main-viewport {
+    padding: 24px;
+  }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1023px) {
+  .sidebar-nav {
+    width: 84px;
+    padding: 20px 8px;
+    align-items: center;
+  }
+
+  .brand-logo {
+    padding-left: 0;
+  }
+
+  .brand-text {
+    display: none;
+  }
+
+  .nav-menu {
+    width: 100%;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 4px;
+    font-size: 0.65rem;
+    text-align: center;
+  }
+
+  .nav-svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .shop-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 767px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  /* El menú lateral pasa a una barra fija abajo */
+  .sidebar-nav {
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: visible;
+    z-index: 40;
+    width: 100%;
+    height: auto;
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+    flex-direction: row;
+    border-right: none;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .brand-logo {
+    display: none;
+  }
+
+  .nav-menu {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 2px;
+  }
+
+  .nav-item {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 2px;
+    font-size: 0.6rem;
+    border-radius: 8px;
+  }
+
+  .main-viewport {
+    padding: 16px 16px calc(84px + env(safe-area-inset-bottom));
+    gap: 16px;
+  }
+
+  .view-heading {
+    font-size: 1.3rem;
+  }
+
+  .top-pills-group {
+    padding: 4px 6px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .grid-col {
+    gap: 14px;
+  }
+
+  .hero-display-card {
+    padding: 20px 14px;
+  }
+
+  .spotlight-card-img {
+    width: 220px;
+  }
+
+  .neon-cta-btn {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 0.85rem;
+  }
+
+  .flip-card-container {
+    width: 180px;
+    height: 252px;
+  }
+
+  .summary-thumb img {
+    width: 64px;
+  }
+
+  .sets-grid-scroll {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    max-height: 60vh;
+  }
+
+  .all-sets-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+
+  .album-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+
+  /* Filtros del álbum y la tienda: un campo por fila, a todo el ancho */
+  .album-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .field select.custom-input,
+  .view-header-bar .custom-input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .view-header-bar > * {
+    flex: 1 1 100%;
+  }
+
+  .segmented {
+    width: 100%;
+  }
+
+  .segmented button {
+    flex: 1;
+  }
+
+  .price-range .custom-input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Ficha de carta: imagen arriba y datos debajo */
+  .card-modal {
+    flex-direction: column;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .card-modal-img {
+    width: 200px;
+    max-width: 70%;
+  }
+
+  .card-modal-info {
+    width: 100%;
+  }
+}

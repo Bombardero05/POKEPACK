@@ -1,6 +1,6 @@
 // src/components/PackOpener.jsx
 import { useEffect, useState } from 'react';
-import PortadaDefault from '../assets/Portada.png';
+import PortadaDefault from '../assets/portada.webp';
 import { getCardsBySet } from '../services/pokemonService';
 import { generatePack } from '../utils/packOpenerLogic';
 import { getPackImageBySetId } from '../utils/packImages';
