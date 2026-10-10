@@ -23,21 +23,29 @@ Simulador de apertura de sobres de cartas Pokémon hecho con React. Abres sobres
 
 ```
 src/
-├── components/      Interfaz: apertura de sobres, álbum, tienda, ficha de carta…
-├── game/            Lógica del juego sin React (se prueba de forma aislada)
-│   ├── gameState.js   Estado de la partida y reducer con todas las acciones
-│   ├── pricing.js     Precio de cartas y sobres
-│   └── albumUtils.js  Filtros y orden del álbum
-├── services/        Llamadas a la API, con reintentos y caché en localStorage
-└── utils/           Rarezas y generación de sobres
+├── Inicio/          App.jsx: pantalla principal y pestañas. App.css: estilos
+├── componentes/     Interfaz: apertura de sobres, álbum, tienda, ficha de carta, barra lateral…
+├── juego/           Lógica del juego sin React (se prueba de forma aislada)
+│   ├── estadoJuego.js      Estado de la partida y reducer con todas las acciones
+│   ├── precios.js          Precio de cartas y sobres
+│   └── utilidadesAlbum.js  Filtros y orden del álbum
+├── servicios/
+│   └── servicioPokemon.js  Llamadas a la API, con reintentos y caché en localStorage
+├── utilidades/
+│   ├── rareza.js           Normalización de rarezas a 6 niveles
+│   ├── logicaSobres.js     Generación de sobres
+│   └── imagenesSobres.js   Imagen de cada sobre según la colección
+└── assets/          Imágenes
 ```
+
+Las pruebas están junto a cada archivo que prueban (`*.test.js`).
 
 ## Decisiones técnicas
 
-- **Lógica separada de la interfaz.** Todo cambio de la partida pasa por un reducer puro en `game/gameState.js`, así se puede probar sin montar componentes.
+- **Lógica separada de la interfaz.** Todo cambio de la partida pasa por un reducer puro en `juego/estadoJuego.js`, así se puede probar sin montar componentes.
 - **La API falla a menudo** (errores 500 y respuestas cortadas): las peticiones se reintentan hasta 3 veces y solo se piden los campos necesarios.
 - **Caché ligera.** De cada carta se guardan solo los 11 campos que usa la app, no la ficha completa de la API. Si `localStorage` se llena, se vacía la caché de cartas sin tocar la partida.
-- **Rarezas normalizadas.** La API usa nombres distintos según la época (`Ultra Rare`, `Rare Ultra`, `Rare Holo VMAX`…); `utils/rarity.js` los agrupa en 6 niveles.
+- **Rarezas normalizadas.** La API usa nombres distintos según la época (`Ultra Rare`, `Rare Ultra`, `Rare Holo VMAX`…); `utilidades/rareza.js` los agrupa en 6 niveles.
 
 ## Ejecutar en local
 
