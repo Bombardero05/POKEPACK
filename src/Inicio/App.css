@@ -1,4 +1,3 @@
-/* src/App.css */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
@@ -27,14 +26,12 @@ body {
   overflow-x: hidden;
 }
 
-/* Layout Principal */
 .app-container {
   display: flex;
   min-height: 100vh;
   background-color: var(--bg-main);
 }
 
-/* 1. Sidebar Nav */
 .sidebar-nav {
   width: 220px;
   background-color: var(--bg-sidebar);
@@ -137,7 +134,6 @@ body {
   height: 18px;
 }
 
-/* 2. Main Viewport */
 .main-viewport {
   flex: 1;
   padding: 24px 32px;
@@ -224,10 +220,9 @@ body {
   border-radius: 50%;
 }
 
-/* Dashboard Grid */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 280px 1fr 280px;
+  grid-template-columns: 280px minmax(0, 1fr) 280px;
   gap: 18px;
   align-items: stretch;
 }
@@ -238,7 +233,6 @@ body {
   gap: 18px;
 }
 
-/* Estilo Tarjeta Base */
 .dash-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -261,7 +255,6 @@ body {
   margin-top: 2px;
 }
 
-/* Columna Izquierda: Gauge y Gachapón */
 .progress-gauge-wrapper {
   display: flex;
   justify-content: center;
@@ -273,7 +266,7 @@ body {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  /* Anillo de progreso: el color cian ocupa el porcentaje de --progress */
+
   background:
     radial-gradient(closest-side, #141a27 82%, transparent 83% 100%),
     conic-gradient(var(--accent-cyan) var(--progress, 0%), rgba(255, 255, 255, 0.06) 0);
@@ -367,7 +360,6 @@ body {
 .capsule-yellow { background: #facc15; }
 .capsule-red { background: #ef4444; }
 
-/* Columna Central */
 .hero-display-card {
   flex: 1;
   display: flex;
@@ -432,7 +424,6 @@ body {
   cursor: pointer;
 }
 
-/* Drops Inferiores */
 .drops-row-card {
   display: flex;
   justify-content: space-between;
@@ -450,7 +441,6 @@ body {
   border: 1px solid var(--card-border);
 }
 
-/* Columna Derecha: Mercado y Misiones */
 .market-price-tag {
   font-size: 2rem;
   font-weight: 800;
@@ -488,7 +478,6 @@ body {
   font-weight: 600;
 }
 
-/* Flujo de Apertura e Inputs */
 .custom-input {
   padding: 8px 14px;
   border-radius: 8px;
@@ -554,10 +543,9 @@ body {
   font-size: 0.65rem;
 }
 
-/* Flip Card 3D */
 .flip-card-container {
-  width: 200px;
-  height: 280px;
+  width: min(200px, 60vw);
+  aspect-ratio: 5 / 7;
   perspective: 1000px;
   margin: 10px auto;
   cursor: pointer;
@@ -594,7 +582,66 @@ body {
   transform: rotateY(180deg);
 }
 
-/* Vistas Alternativas (Álbum / Colecciones) */
+.grid-col,
+.hero-display-card {
+  min-width: 0;
+}
+
+.pack-selection-flow,
+.opening-flow-card,
+.summary-flow {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.opening-flow-card {
+  align-items: center;
+  text-align: center;
+}
+
+.card-counter-indicator {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.flow-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.flow-header h3 {
+  flex: 1 1 220px;
+  font-size: 0.95rem;
+}
+
+.flow-header .custom-input {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.sets-grid-scroll {
+  margin-top: 0;
+  grid-auto-rows: max-content;
+}
+
+.summary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.summary-flow h4 {
+  font-size: 1rem;
+}
+
 .view-wrapper {
   display: flex;
   flex-direction: column;
@@ -662,20 +709,21 @@ body {
   border-radius: 10px;
 }
 
-/* Resumen Apertura */
 .summary-cards-row {
   display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 10px 0;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 14px 10px;
+  padding: 6px 0;
 }
 
 .summary-thumb img {
-  width: 80px;
+  display: block;
+  width: 100%;
+  max-width: 96px;
+  margin: 0 auto;
   border-radius: 6px;
 }
-/* ---------- Partida real: estados, botones y nuevas vistas ---------- */
 
 button {
   font-family: inherit;
@@ -737,7 +785,6 @@ button:disabled,
   color: var(--text-main);
 }
 
-/* Los elementos clicables ahora son <button> (accesibles con teclado) */
 .set-box,
 .set-explorer-card,
 .flip-card-container,
@@ -757,7 +804,6 @@ button:disabled,
   font-size: 1rem;
 }
 
-/* Niveles de rareza */
 .tier-badge {
   font-size: 0.7rem;
   font-weight: 700;
@@ -789,12 +835,19 @@ button:disabled,
 }
 
 .summary-thumb {
+  flex: 0 1 88px;
+  min-width: 60px;
   text-align: center;
   font-size: 0.65rem;
-  max-width: 80px;
 }
 
-/* Mercado */
+.summary-thumb small {
+  display: block;
+  margin-top: 4px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 .coin-inline {
   display: inline-block;
   width: 18px;
@@ -821,7 +874,6 @@ button:disabled,
   border-color: var(--accent-cyan);
 }
 
-/* Misiones */
 .mission-row {
   align-items: center;
   gap: 10px;
@@ -838,7 +890,6 @@ button:disabled,
   font-size: 0.7rem;
 }
 
-/* Colecciones: progreso por colección */
 .mini-progress {
   height: 4px;
   background: rgba(255, 255, 255, 0.08);
@@ -857,7 +908,6 @@ button:disabled,
   color: var(--text-muted);
 }
 
-/* Álbum */
 .album-card-item p {
   font-size: 0.8rem;
   font-weight: 600;
@@ -872,7 +922,6 @@ button:disabled,
   text-align: center;
 }
 
-/* Tienda */
 .shop-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -901,7 +950,6 @@ button:disabled,
   border-radius: 6px;
 }
 
-/* Ajustes */
 .settings-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -941,8 +989,6 @@ button:disabled,
 .btn-danger:hover {
   background: rgba(239, 68, 68, 0.1);
 }
-
-/* ---------- Álbum: modos, filtros y huecos ---------- */
 
 .segmented {
   display: inline-flex;
@@ -1030,7 +1076,6 @@ select.custom-input optgroup {
   opacity: 0.6;
 }
 
-/* Las cartas del álbum ahora son botones: abren la ficha */
 .album-card-item {
   font: inherit;
   color: inherit;
@@ -1055,7 +1100,6 @@ select.custom-input optgroup {
   z-index: 1;
 }
 
-/* Carta que todavía no tienes: en gris, oscura y con borde discontinuo */
 .album-card-item.is-missing {
   border-style: dashed;
   background: rgba(255, 255, 255, 0.02);
@@ -1071,7 +1115,6 @@ select.custom-input optgroup {
   opacity: 0.45;
 }
 
-/* Ficha de carta */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1126,7 +1169,6 @@ select.custom-input optgroup {
   line-height: 1.5;
 }
 
-/* Logos de colección: nunca más anchos que su tarjeta */
 .set-explorer-card,
 .set-box {
   overflow: hidden;
@@ -1155,7 +1197,6 @@ select.custom-input optgroup {
   overflow-wrap: anywhere;
 }
 
-/* Filtro de precio */
 .price-range {
   display: flex;
   align-items: center;
@@ -1172,8 +1213,6 @@ select.custom-input optgroup {
   font-size: 0.65rem;
   color: #facc15;
 }
-
-/* ---------- Precios y tienda por colección ---------- */
 
 .pack-title {
   font-size: 1rem;
@@ -1248,16 +1287,6 @@ select.custom-input optgroup {
   font-size: 0.7rem;
 }
 
-/* =====================================================================
-   RESPONSIVE
-   - Portátil y escritorio (≥ 1280 px): diseño original de 3 columnas.
-   - Portátil pequeño (1024–1279 px): el sobre arriba a todo el ancho y
-     las otras tarjetas en 2 columnas debajo.
-   - Tablet (768–1023 px): barra lateral solo con iconos.
-   - Móvil (< 768 px): menú abajo, todo en una columna.
-   ===================================================================== */
-
-/* Imagen principal (sobre o mejor carta): más grande, sin pasarse del hueco */
 .spotlight-card-img {
   width: 280px;
   max-width: 100%;
@@ -1275,7 +1304,6 @@ select.custom-input optgroup {
   min-width: 0;
 }
 
-/* El menú lateral se queda fijo al hacer scroll (en móvil pasa abajo) */
 .sidebar-nav {
   position: sticky;
   top: 0;
@@ -1283,7 +1311,6 @@ select.custom-input optgroup {
   overflow-y: auto;
 }
 
-/* ---------- Portátil pequeño ---------- */
 @media (max-width: 1279px) {
   .dashboard-grid {
     grid-template-columns: 1fr 1fr;
@@ -1299,11 +1326,10 @@ select.custom-input optgroup {
   }
 }
 
-/* ---------- Tablet ---------- */
 @media (max-width: 1023px) {
   .sidebar-nav {
-    width: 84px;
-    padding: 20px 8px;
+    width: 92px;
+    padding: 20px 6px;
     align-items: center;
   }
 
@@ -1322,8 +1348,8 @@ select.custom-input optgroup {
   .nav-item {
     flex-direction: column;
     gap: 4px;
-    padding: 10px 4px;
-    font-size: 0.65rem;
+    padding: 10px 2px;
+    font-size: 0.62rem;
     text-align: center;
   }
 
@@ -1337,13 +1363,11 @@ select.custom-input optgroup {
   }
 }
 
-/* ---------- Móvil ---------- */
 @media (max-width: 767px) {
   .app-container {
     flex-direction: column;
   }
 
-  /* El menú lateral pasa a una barra fija abajo */
   .sidebar-nav {
     position: fixed;
     top: auto;
@@ -1414,13 +1438,13 @@ select.custom-input optgroup {
     font-size: 0.85rem;
   }
 
-  .flip-card-container {
-    width: 180px;
-    height: 252px;
+  .summary-cards-row {
+    gap: 12px 8px;
   }
 
-  .summary-thumb img {
-    width: 64px;
+  .summary-thumb {
+    flex-basis: 64px;
+    min-width: 56px;
   }
 
   .sets-grid-scroll {
@@ -1438,7 +1462,6 @@ select.custom-input optgroup {
     gap: 10px;
   }
 
-  /* Filtros del álbum y la tienda: un campo por fila, a todo el ancho */
   .album-toolbar {
     flex-direction: column;
     align-items: stretch;
@@ -1467,7 +1490,6 @@ select.custom-input optgroup {
     min-width: 0;
   }
 
-  /* Ficha de carta: imagen arriba y datos debajo */
   .card-modal {
     flex-direction: column;
     max-height: 90vh;
@@ -1481,5 +1503,82 @@ select.custom-input optgroup {
 
   .card-modal-info {
     width: 100%;
+  }
+}
+
+@media (min-width: 1600px) {
+  html {
+    font-size: 17px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 320px minmax(0, 1fr) 320px;
+  }
+
+  .spotlight-card-img {
+    width: 280px;
+  }
+
+  .flip-card-container {
+    width: 240px;
+  }
+
+  .gauge-circle {
+    width: 170px;
+    height: 170px;
+  }
+}
+
+@media (min-width: 2200px) {
+  html {
+    font-size: 20px;
+  }
+
+  .main-viewport > * {
+    width: 100%;
+    max-width: 2200px;
+    margin-inline: auto;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 400px minmax(0, 1fr) 400px;
+  }
+
+  .sidebar-nav {
+    width: 260px;
+  }
+
+  .nav-svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .spotlight-card-img {
+    width: 340px;
+  }
+
+  .flip-card-container {
+    width: 300px;
+  }
+
+  .gauge-circle {
+    width: 210px;
+    height: 210px;
+  }
+
+  .summary-thumb {
+    flex-basis: 110px;
+  }
+
+  .summary-thumb img {
+    max-width: 120px;
+  }
+
+  .mini-rare-card {
+    width: 56px;
+  }
+
+  .market-cards-strip img {
+    width: 68px;
   }
 }

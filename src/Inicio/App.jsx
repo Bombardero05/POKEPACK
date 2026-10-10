@@ -1,212 +1,207 @@
-// src/Inicio/App.jsx
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import './App.css';
-import { getAllSets, clearCardsCache } from '../services/pokemonService';
+import { obtenerColecciones, borrarCacheCartas } from '../servicios/servicioPokemon';
 import {
-  gameReducer,
-  loadGame,
-  saveGame,
-  canClaimGacha,
-  rollGachaPrize,
-  duplicatesValue,
-  topDuplicates,
-  setProgress,
-  bestCard,
-  totalPacks,
-} from '../game/gameState';
-import { packPriceCoins } from '../game/pricing';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
-import PackOpener from '../components/PackOpener';
+  reductorJuego,
+  cargarPartida,
+  guardarPartida,
+  puedeReclamarGachapon,
+  sortearPremioGachapon,
+  valorRepetidas,
+  mejoresRepetidas,
+  progresoColeccion,
+  mejorCarta,
+  totalSobres,
+} from '../juego/estadoJuego';
+import { precioSobreMonedas } from '../juego/precios';
+import BarraLateral, { PESTANAS } from '../componentes/BarraLateral';
+import Cabecera from '../componentes/Cabecera';
+import AbridorSobres from '../componentes/AbridorSobres';
 import {
-  AlbumProgressCard,
-  GachaponCard,
-  LatestDropsCard,
-  MarketCard,
-  MissionsCard,
-} from '../components/DashboardCards';
-import { SetsExplorer, Settings } from '../components/Views';
-import Shop from '../components/Shop';
-import Album from '../components/Album';
-
-const TITLES = {
-  home: 'Inicio',
-  'all-sets': 'Colecciones',
-  shop: 'Tienda',
-  'my-collection': 'Álbum',
-  settings: 'Ajustes',
-};
+  TarjetaProgresoAlbum,
+  TarjetaGachapon,
+  TarjetaUltimasRaras,
+  TarjetaMercado,
+  TarjetaMisiones,
+} from '../componentes/TarjetasPanel';
+import { ExploradorColecciones, Ajustes } from '../componentes/Vistas';
+import Tienda from '../componentes/Tienda';
+import Album from '../componentes/Album';
 
 function App() {
-  const [game, dispatch] = useReducer(gameReducer, undefined, loadGame);
-  const [currentTab, setCurrentTab] = useState('home');
-  const [sets, setSets] = useState([]);
-  const [setsStatus, setSetsStatus] = useState('loading'); // loading | ready | error
-  const [openerRequest, setOpenerRequest] = useState(null);
-  const [notice, setNotice] = useState('');
+  const [partida, despachar] = useReducer(reductorJuego, undefined, cargarPartida);
+  const [pestanaActual, setPestanaActual] = useState('inicio');
+  const [colecciones, setColecciones] = useState([]);
+  const [estadoColecciones, setEstadoColecciones] = useState('cargando');
+  const [peticionAbridor, setPeticionAbridor] = useState(null);
+  const [aviso, setAviso] = useState('');
 
-  // Guarda la partida cada vez que cambia.
   useEffect(() => {
-    saveGame(game);
-  }, [game]);
+    guardarPartida(partida);
+  }, [partida]);
 
-  // Los avisos ("+100 monedas"…) desaparecen solos a los 4 segundos.
   useEffect(() => {
-    if (!notice) return undefined;
-    const timer = setTimeout(() => setNotice(''), 4000);
-    return () => clearTimeout(timer);
-  }, [notice]);
+    if (!aviso) return undefined;
+    const temporizador = setTimeout(() => setAviso(''), 4000);
+    return () => clearTimeout(temporizador);
+  }, [aviso]);
 
-  // Si se lanzan dos cargas a la vez (React en modo desarrollo monta dos veces),
-  // solo la última puede cambiar el estado. Así una respuesta lenta con error
-  // no tapa a una que ya ha ido bien.
-  const lastSetsRequest = useRef(0);
-  const loadSets = useCallback(async () => {
-    const requestId = ++lastSetsRequest.current;
-    setSetsStatus('loading');
+  const ultimaPeticionColecciones = useRef(0);
+  const cargarColecciones = useCallback(async () => {
+    const idPeticion = ++ultimaPeticionColecciones.current;
+    setEstadoColecciones('cargando');
     try {
-      const data = await getAllSets();
-      if (requestId !== lastSetsRequest.current) return;
-      setSets(data);
-      setSetsStatus('ready');
+      const datos = await obtenerColecciones();
+      if (idPeticion !== ultimaPeticionColecciones.current) return;
+      setColecciones(datos);
+      setEstadoColecciones('listo');
     } catch {
-      if (requestId !== lastSetsRequest.current) return;
-      setSetsStatus('error');
+      if (idPeticion !== ultimaPeticionColecciones.current) return;
+      setEstadoColecciones('error');
     }
   }, []);
 
   useEffect(() => {
-    loadSets();
-  }, [loadSets]);
+    cargarColecciones();
+  }, [cargarColecciones]);
 
-  // Datos derivados de la partida (se recalculan solo cuando cambia).
-  const lastSet = useMemo(() => sets.find((s) => s.id === game.lastSetId), [sets, game.lastSetId]);
-  const progress = useMemo(() => setProgress(game.collection, lastSet), [game.collection, lastSet]);
-  const duplicates = useMemo(() => duplicatesValue(game.collection), [game.collection]);
-  const topEntries = useMemo(() => topDuplicates(game.collection), [game.collection]);
-  const featuredCard = useMemo(() => bestCard(game.collection), [game.collection]);
+  const ultimaColeccion = useMemo(
+    () => colecciones.find((c) => c.id === partida.lastSetId),
+    [colecciones, partida.lastSetId]
+  );
+  const progreso = useMemo(
+    () => progresoColeccion(partida.collection, ultimaColeccion),
+    [partida.collection, ultimaColeccion]
+  );
+  const repetidas = useMemo(() => valorRepetidas(partida.collection), [partida.collection]);
+  const mejores = useMemo(() => mejoresRepetidas(partida.collection), [partida.collection]);
+  const cartaDestacada = useMemo(() => mejorCarta(partida.collection), [partida.collection]);
 
-  const handlePackOpened = (cards, set, packPrice) =>
-    dispatch({ type: 'OPEN_PACK', cards, setId: set.id, packPrice });
+  const sobreAbierto = (cartas, coleccion, precioSobre) =>
+    despachar({ tipo: 'ABRIR_SOBRE', cartas, idColeccion: coleccion.id, precioSobre });
 
-  const handleBuyPacks = (setId, qty, unitPrice) => dispatch({ type: 'BUY_PACKS', setId, qty, unitPrice });
+  const comprarSobres = (idColeccion, cantidad, precioUnidad) =>
+    despachar({ tipo: 'COMPRAR_SOBRES', idColeccion, cantidad, precioUnidad });
 
-  // Cada vez que se cargan las cartas de una colección: se guarda el precio de su
-  // sobre y se actualiza el valor de las cartas que ya tienes de ella.
-  const handleCardsLoaded = useCallback((set, cards) => {
-    if (!set || cards.length === 0) return;
-    dispatch({ type: 'SET_PACK_PRICE', setId: set.id, price: packPriceCoins(cards) });
-    dispatch({ type: 'REFRESH_PRICES', cards });
+  const cartasCargadas = useCallback((coleccion, cartas) => {
+    if (!coleccion || cartas.length === 0) return;
+    despachar({ tipo: 'FIJAR_PRECIO_SOBRE', idColeccion: coleccion.id, precio: precioSobreMonedas(cartas) });
+    despachar({ tipo: 'ACTUALIZAR_PRECIOS', cartas });
   }, []);
 
-  const handleSpin = () => {
-    const prize = rollGachaPrize();
-    dispatch({ type: 'CLAIM_GACHA', prize });
-    setNotice(prize.wildcards ? '¡Gachapón: +1 sobre comodín!' : `¡Gachapón: +${prize.coins} monedas!`);
+  const girarGachapon = () => {
+    const premio = sortearPremioGachapon();
+    despachar({ tipo: 'RECLAMAR_GACHAPON', premio });
+    setAviso(premio.comodines ? '¡Gachapón: +1 sobre comodín!' : `¡Gachapón: +${premio.monedas} monedas!`);
   };
 
-  const handleSellAll = () => {
-    dispatch({ type: 'SELL_ALL_DUPLICATES' });
-    setNotice(`Vendidas ${duplicates.sold} repetidas: +${duplicates.coins} monedas`);
+  const venderTodas = () => {
+    despachar({ tipo: 'VENDER_TODAS_REPETIDAS' });
+    setAviso(`Vendidas ${repetidas.vendidas} repetidas: +${repetidas.monedas} monedas`);
   };
 
-  const handleChooseSetFromExplorer = (set) => {
-    setOpenerRequest({ set, at: Date.now() });
-    setCurrentTab('home');
+  const elegirColeccionParaAbrir = (coleccion) => {
+    setPeticionAbridor({ coleccion, momento: Date.now() });
+    setPestanaActual('inicio');
   };
 
-  const handleChangeTab = (tab) => {
-    setCurrentTab(tab);
-    if (tab === 'home') setOpenerRequest(null);
+  const cambiarPestana = (pestana) => {
+    setPestanaActual(pestana);
+    if (pestana === 'inicio') setPeticionAbridor(null);
   };
+
+  const titulo = PESTANAS.find((p) => p.id === pestanaActual)?.texto;
 
   return (
     <div className="app-container">
-      <Sidebar currentTab={currentTab} onChangeTab={handleChangeTab} />
+      <BarraLateral pestanaActual={pestanaActual} alCambiarPestana={cambiarPestana} />
 
       <main className="main-viewport">
-        <Header title={TITLES[currentTab]} coins={game.coins} packs={totalPacks(game)} notice={notice} />
+        <Cabecera titulo={titulo} monedas={partida.coins} sobres={totalSobres(partida)} aviso={aviso} />
 
-        {currentTab === 'home' && (
+        {pestanaActual === 'inicio' && (
           <div className="dashboard-grid">
             <div className="grid-col left-col">
-              <AlbumProgressCard set={lastSet} progress={progress} />
-              <GachaponCard canClaim={canClaimGacha(game)} onSpin={handleSpin} />
+              <TarjetaProgresoAlbum coleccion={ultimaColeccion} progreso={progreso} />
+              <TarjetaGachapon puedeReclamar={puedeReclamarGachapon(partida)} alGirar={girarGachapon} />
             </div>
 
             <div className="grid-col center-col">
               <div className="dash-card hero-display-card">
-                <PackOpener
-                  key={openerRequest?.at || 'opener'}
-                  sets={sets}
-                  setsStatus={setsStatus}
-                  onRetrySets={loadSets}
-                  game={game}
-                  featuredCard={featuredCard}
-                  onCardsLoaded={handleCardsLoaded}
-                  onPackOpened={handlePackOpened}
-                  onBuyPacks={handleBuyPacks}
-                  request={openerRequest}
+                <AbridorSobres
+                  key={peticionAbridor?.momento || 'abridor'}
+                  colecciones={colecciones}
+                  estadoColecciones={estadoColecciones}
+                  alReintentarColecciones={cargarColecciones}
+                  partida={partida}
+                  cartaDestacada={cartaDestacada}
+                  alCargarCartas={cartasCargadas}
+                  alAbrirSobre={sobreAbierto}
+                  alComprarSobres={comprarSobres}
+                  peticion={peticionAbridor}
                 />
               </div>
-              <LatestDropsCard history={game.history} />
+              <TarjetaUltimasRaras historial={partida.history} />
             </div>
 
             <div className="grid-col right-col">
-              <MarketCard
-                duplicates={duplicates}
-                topEntries={topEntries}
-                onSellAll={handleSellAll}
-                onSellOne={(cardId) => dispatch({ type: 'SELL_DUPLICATE', cardId })}
+              <TarjetaMercado
+                repetidas={repetidas}
+                mejores={mejores}
+                alVenderTodas={venderTodas}
+                alVenderUna={(idCarta) => despachar({ tipo: 'VENDER_REPETIDA', idCarta })}
               />
-              <MissionsCard
-                state={game}
-                onClaim={(missionId) => dispatch({ type: 'CLAIM_MISSION', missionId })}
+              <TarjetaMisiones
+                estado={partida}
+                alReclamar={(idMision) => despachar({ tipo: 'RECLAMAR_MISION', idMision })}
               />
             </div>
           </div>
         )}
 
-        {currentTab === 'all-sets' && (
-          <SetsExplorer
-            sets={sets}
-            setsStatus={setsStatus}
-            onRetry={loadSets}
-            collection={game.collection}
-            onChooseSet={handleChooseSetFromExplorer}
+        {pestanaActual === 'colecciones' && (
+          <ExploradorColecciones
+            colecciones={colecciones}
+            estadoColecciones={estadoColecciones}
+            alReintentar={cargarColecciones}
+            miColeccion={partida.collection}
+            alElegirColeccion={elegirColeccionParaAbrir}
           />
         )}
 
-        {currentTab === 'shop' && (
-          <Shop
-            sets={sets}
-            game={game}
-            defaultSetId={game.lastSetId}
-            onCardsLoaded={handleCardsLoaded}
-            onBuy={(setId, qty, unitPrice) => {
-              handleBuyPacks(setId, qty, unitPrice);
-              setNotice(`Has comprado ${qty} ${qty === 1 ? 'sobre' : 'sobres'}`);
+        {pestanaActual === 'tienda' && (
+          <Tienda
+            colecciones={colecciones}
+            partida={partida}
+            idColeccionInicial={partida.lastSetId}
+            alCargarCartas={cartasCargadas}
+            alComprar={(idColeccion, cantidad, precioUnidad) => {
+              comprarSobres(idColeccion, cantidad, precioUnidad);
+              setAviso(`Has comprado ${cantidad} ${cantidad === 1 ? 'sobre' : 'sobres'}`);
             }}
-            onOpenSet={handleChooseSetFromExplorer}
+            alAbrirColeccion={elegirColeccionParaAbrir}
           />
         )}
 
-        {currentTab === 'my-collection' && (
+        {pestanaActual === 'album' && (
           <Album
-            sets={sets}
-            collection={game.collection}
-            defaultSetId={game.lastSetId}
-            onCardsLoaded={handleCardsLoaded}
-            onSell={(cardId) => dispatch({ type: 'SELL_CARD', cardId })}
-            onGoHome={() => handleChangeTab('home')}
+            colecciones={colecciones}
+            miColeccion={partida.collection}
+            idColeccionInicial={partida.lastSetId}
+            alCargarCartas={cartasCargadas}
+            alVender={(idCarta) => despachar({ tipo: 'VENDER_CARTA', idCarta })}
+            alIrAInicio={() => cambiarPestana('inicio')}
           />
         )}
 
-        {currentTab === 'settings' && (
-          <Settings state={game} onClearCache={clearCardsCache} onReset={() => dispatch({ type: 'RESET' })} />
+        {pestanaActual === 'ajustes' && (
+          <Ajustes
+            estado={partida}
+            alBorrarCache={borrarCacheCartas}
+            alReiniciar={() => despachar({ tipo: 'REINICIAR' })}
+          />
         )}
       </main>
-
     </div>
   );
 }

@@ -1,17 +1,6 @@
-// src/utils/rarity.js
+export const NIVELES = ['common', 'uncommon', 'rare', 'ultra', 'illustration', 'secret'];
 
-/**
- * La API de Pokémon TCG no usa los mismos nombres de rareza en todas las
- * colecciones. Por ejemplo, las colecciones recientes usan "Ultra Rare" o
- * "Hyper Rare", mientras que las de Espada y Escudo usan "Rare Ultra",
- * "Rare Secret" o "Rare Holo VMAX".
- *
- * Esta función traduce cualquier nombre a uno de estos 6 niveles, que son los
- * que usa la lógica de sobres, el mercado y el álbum.
- */
-export const TIERS = ['common', 'uncommon', 'rare', 'ultra', 'illustration', 'secret'];
-
-export const TIER_LABELS = {
+export const NOMBRES_NIVEL = {
   common: 'Común',
   uncommon: 'Infrecuente',
   rare: 'Rara',
@@ -20,8 +9,17 @@ export const TIER_LABELS = {
   secret: 'Secreta',
 };
 
-export const getTier = (rarity) => {
-  const r = (rarity || '').toLowerCase();
+export const RESPALDOS_NIVEL = {
+  common: ['common', 'uncommon', 'rare'],
+  uncommon: ['uncommon', 'common', 'rare'],
+  rare: ['rare', 'uncommon', 'common'],
+  ultra: ['ultra', 'rare', 'uncommon', 'common'],
+  illustration: ['illustration', 'ultra', 'rare', 'uncommon', 'common'],
+  secret: ['secret', 'illustration', 'ultra', 'rare', 'uncommon', 'common'],
+};
+
+export const obtenerNivel = (rareza) => {
+  const r = (rareza || '').toLowerCase();
 
   if (!r || r === 'common') return 'common';
   if (r === 'uncommon') return 'uncommon';
@@ -58,6 +56,5 @@ export const getTier = (rarity) => {
   return 'common';
 };
 
-/** Devuelve true si el nivel `tier` es igual o superior a `minTier`. */
-export const isTierAtLeast = (tier, minTier) =>
-  TIERS.indexOf(tier) >= TIERS.indexOf(minTier);
+export const esNivelMinimo = (nivel, nivelMinimo) =>
+  NIVELES.indexOf(nivel) >= NIVELES.indexOf(nivelMinimo);
