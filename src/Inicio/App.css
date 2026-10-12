@@ -309,17 +309,15 @@ body {
 }
 
 .gachapon-card {
-  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .gachapon-art {
-  flex: 1;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-top: 14px;
+  margin: 14px 0 16px;
   position: relative;
   min-height: 110px;
 }
